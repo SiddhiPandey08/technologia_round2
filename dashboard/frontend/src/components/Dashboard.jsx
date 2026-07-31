@@ -387,7 +387,7 @@ export default function Dashboard({ onLogout }) {
 
       try {
         const token = localStorage.getItem("recruitos_token");
-        const res = await fetch(`/${API_BASE}/api/session/tab-switch`, {
+        const res = await fetch(`${API_BASE}/api/session/tab-switch`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -525,7 +525,7 @@ export default function Dashboard({ onLogout }) {
     if (!token) throw new Error("Authentication token missing.");
 
     const response = await fetch(
-      `/${BASE}/api/missions/${missionNumber}/answers`,
+      `${API_BASE}/api/missions/${missionNumber}/answers`,
       {
         method: "POST",
         headers: {
@@ -552,7 +552,7 @@ export default function Dashboard({ onLogout }) {
       await handleWorkspaceAnswersSave(1, discoveryData);
 
       const token = localStorage.getItem("recruitos_token");
-      const completeRes = await fetch(`/${BASE}/api/missions/1/complete`, {
+      const completeRes = await fetch(`${API_BASE}/api/missions/1/complete`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -593,7 +593,7 @@ export default function Dashboard({ onLogout }) {
 
       await handleWorkspaceAnswersSave(4, m4Data);
 
-      await fetch(`/${API_BASE}/api/missions/4/architecture`, {
+      await fetch(`${API_BASE}/api/missions/4/architecture`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -609,7 +609,7 @@ export default function Dashboard({ onLogout }) {
         }),
       });
 
-      const completeRes = await fetch(`/${API_BASE}/api/missions/4/complete`, {
+      const completeRes = await fetch(`${API_BASE}/api/missions/4/complete`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });
