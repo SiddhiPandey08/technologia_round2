@@ -35,7 +35,7 @@ export default function Login({ onLoginSuccess }) {
 
       // Ensure an Attempt exists before the dashboard tries to load missions.
       // 400 here just means "already started" (returning candidate) — fine to ignore.
-      const startRes = await fetch(`/${API_BASE}/api/missions/start`, {
+      const startRes = await fetch(`${API_BASE}/api/missions/start`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -224,7 +224,7 @@ function applyMissionStatuses(baseMissions, attemptMissions) {
 
 async function fetchArchitecture(missionNumber, token) {
   const res = await fetch(
-    `/${API_BASE}/api/missions/${missionNumber}/architecture`,
+    `${API_BASE}/api/missions/${missionNumber}/architecture`,
     {
       headers: { Authorization: `Bearer ${token}` },
     },
@@ -454,7 +454,7 @@ export default function Dashboard({ onLogout }) {
     const token = localStorage.getItem("recruitos_token");
     if (!token) return;
 
-    fetch(`/${API_BASE}/api/missions`, {
+    fetch(`${API_BASE}/api/missions`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(async (res) => {
@@ -525,7 +525,7 @@ export default function Dashboard({ onLogout }) {
     if (!token) throw new Error("Authentication token missing.");
 
     const response = await fetch(
-      `/${API_BASE}/api/missions/${missionNumber}/answers`,
+      `/${BASE}/api/missions/${missionNumber}/answers`,
       {
         method: "POST",
         headers: {
@@ -552,7 +552,7 @@ export default function Dashboard({ onLogout }) {
       await handleWorkspaceAnswersSave(1, discoveryData);
 
       const token = localStorage.getItem("recruitos_token");
-      const completeRes = await fetch(`/${API_BASE}/api/missions/1/complete`, {
+      const completeRes = await fetch(`/${BASE}/api/missions/1/complete`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -647,7 +647,7 @@ export default function Dashboard({ onLogout }) {
       };
 
       const saveRes = await fetch(
-        `/${API_BASE}/api/missions/${missionNumber}/architecture`,
+        `${API_BASE}/api/missions/${missionNumber}/architecture`,
         {
           method: "POST",
           headers: {
@@ -663,7 +663,7 @@ export default function Dashboard({ onLogout }) {
       }
 
       const completeRes = await fetch(
-        `/${API_BASE}/api/missions/${missionNumber}/complete`,
+        `${API_BASE}/api/missions/${missionNumber}/complete`,
         {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },
