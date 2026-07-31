@@ -7,10 +7,16 @@ export async function connectDB() {
   mongoose.set("strictQuery", true);
 
   try {
-    await mongoose.connect(uri, { dbName: "recruit-os" });
+    await mongoose.connect(
+      uri,
+      { dbName: "recruit-os" },
+      {
+        maxPoolSize: 20,
+      },
+    );
     console.log("connected to mongodb (db: recruit-os)");
   } catch (err) {
     console.error("MongoDB connection failed:", err.message);
-    throw err; // let whoever calls connectDB() decide whether to crash the boot
+    throw err;
   }
 }

@@ -1,44 +1,47 @@
-// Run with: node src/scripts/seedCandidates.js
-// Edit the CANDIDATES list below, or adapt this to read from a CSV export
-// of your Round 1 shortlist.
-
+// src/scripts/seedCandidates.js
 import "dotenv/config";
-import bcrypt from "bcryptjs";
-import { connectDB } from "../config/db.js";
-import Candidate from "../models/Candidate.js";
 import mongoose from "mongoose";
+import XLSX from "xlsx";
+import path from "path";
+import { fileURLToPath } from "url";
+import Candidate from "../models/Candidate.js"; // adjust path, note the .js extension
 
-const CANDIDATES = [
-  {
-    candidateId: "TN-001",
-    name: "Example Candidate1",
-    email: "example1@college.edu",
-    password: "changeme123",
-  },
-];
+// Recreate __dirname for ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 async function seed() {
-  await connectDB();
+  try {
+    await mongoose.connect(process.env.MONGO_URI, { maxPoolSize: 20 });
+    console.log("Connected to MongoDB");
 
-  for (const c of CANDIDATES) {
-    const passwordHash = await bcrypt.hash(c.password, 10);
-    await Candidate.findOneAndUpdate(
-      { candidateId: c.candidateId },
-      {
-        candidateId: c.candidateId,
-        name: c.name,
-        email: c.email,
-        passwordHash,
-      },
-      { upsert: true },
-    );
-    console.log(`seeded ${c.candidateId} — ${c.name}`);
+    const filePath = path.join(__dirname, "../../src/data/candidates.xlsx");
+    const workbook = XLSX.readFile(filePath);
+    const sheetName = workbook.SheetNames[0];
+    const sheet = workbook.Sheets[sheetName];
+    const rows = XLSX.utils.sheet_to_json(sheet);
+
+    if (!rows.length) {
+      console.log("No rows found in the sheet.");
+      return;
+    }
+
+    const candidates = rows.map((row) => ({
+      candidateId: String(row.id),
+      name: row.name,
+      email: row.email,
+      branch: row.branch,
+      score: row.score,
+    }));
+
+    await Candidate.deleteMany({});
+    const result = await Candidate.insertMany(candidates, { ordered: false });
+    console.log(`Inserted ${result.length} candidates.`);
+  } catch (err) {
+    console.error("Seeding failed:", err.message);
+  } finally {
+    await mongoose.disconnect();
   }
-
-  await mongoose.disconnect();
 }
 
-seed().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+seed();
