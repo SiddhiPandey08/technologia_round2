@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -10,6 +10,7 @@ import Dashboard from "./components/Dashboard.jsx";
 import Login from "./components/Login.jsx";
 import AdminDashboard from "./components/AdminDashboard.jsx"; // adjust path if needed
 import MissionComplete from "./components/MissionComplete.jsx";
+import LandingPage from "./components/Landingpage.jsx";
 export default function App() {
   const [authed, setAuthed] = useState(() =>
     Boolean(localStorage.getItem("recruitos_token")),

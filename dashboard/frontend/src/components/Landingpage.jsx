@@ -2,6 +2,10 @@ import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { GridScan } from "./GridScan/GridScan.jsx";
+import acmSigaiLogo from "../assets/acm-sigai-logo-dark.png";
+import tcetLogo from "../assets/tcet.png";
+import tcsLogo from "../assets/tcs.png";
+import tcetSigaiLogo from "../assets/tcet-sigai.png";
 
 const NAV_LINKS = ["Missions", "Engineering", "Systems"];
 
@@ -220,7 +224,31 @@ function MissionStepperStrip() {
     </div>
   );
 }
-
+function OrganizerLogos() {
+  const logos = [
+    { src: acmSigaiLogo, alt: "ACM SIGAI" },
+    { src: tcetLogo, alt: "TCET" },
+    { src: tcsLogo, alt: "TCS" },
+    { src: tcetSigaiLogo, alt: "TCET SIGAI" },
+  ];
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+      {logos.map((l) => (
+        <img
+          key={l.alt}
+          src={l.src}
+          alt={l.alt}
+          style={{
+            height: 22,
+            width: "auto",
+            opacity: 0.85,
+            filter: "grayscale(10%)",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
 export default function LandingPage() {
   const containerRef = useRef(null);
   const mockupWrapRef = useRef(null);
