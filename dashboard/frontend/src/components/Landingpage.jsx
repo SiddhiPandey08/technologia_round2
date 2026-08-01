@@ -6,7 +6,6 @@ import acmSigaiLogo from "../assets/acm-sigai-logo-dark.png";
 import tcetLogo from "../assets/tcet.png";
 import tcsLogo from "../assets/tcs.png";
 import tcetSigaiLogo from "../assets/tcet-sigai.png";
-
 const NAV_LINKS = ["Missions", "Engineering", "Systems"];
 
 const MISSIONS_DATA = [
@@ -81,13 +80,22 @@ function Header() {
           padding: "12px 24px",
         }}
       >
-        <span
-          className="mono flowing-wordmark"
-          style={{ fontSize: 22, fontWeight: 800, letterSpacing: "0.005em" }}
+        <div
+          className="header-brand"
+          style={{ display: "flex", alignItems: "center", gap: 16 }}
         >
-          TECHNOLOGIA 2.0
-        </span>
-
+          <OrganizerLogos />
+          <span
+            aria-hidden
+            style={{ width: 1, height: 18, background: "var(--border)" }}
+          />
+          <span
+            className="mono flowing-wordmark"
+            style={{ fontSize: 22, fontWeight: 800, letterSpacing: "0.005em" }}
+          >
+            TECHNOLOGIA 2.0
+          </span>
+        </div>
         <nav
           className="header-nav"
           style={{ display: "flex", alignItems: "center", gap: 24 }}
