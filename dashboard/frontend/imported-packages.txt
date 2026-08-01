@@ -1,0 +1,6 @@
+gsap
+ogl
+postprocessing
+react
+react-router-dom
+three
