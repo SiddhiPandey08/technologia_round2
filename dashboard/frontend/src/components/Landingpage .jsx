@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { GridScan } from "./components/GridScan/GridScan";
+import { GridScan } from "./GridScan/GridScan.jsx";
 
 const NAV_LINKS = ["Missions", "Engineering", "Systems"];
 
