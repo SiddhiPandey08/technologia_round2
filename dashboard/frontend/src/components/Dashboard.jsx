@@ -203,7 +203,7 @@ const GLOSSARY_RESOURCE = {
   key: "glossary",
   type: "document",
   title: "Glossary & Hints",
-  url: "/resources/Glossary_and_Hints.pdf",
+  url: "/resources/glossary-and-hints.pdf",
 };
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:4000";
