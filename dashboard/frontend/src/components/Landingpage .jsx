@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { GridScan } from "./components/GridScan/GridScan";
 
 const NAV_LINKS = ["Missions", "Engineering", "Systems"];
 
@@ -355,8 +356,17 @@ export default function LandingPage() {
         }
       `}</style>
       <div className="bg-dotgrid" />
+      // ...inside the root container, right after{" "}
+      <div className="bg-dotgrid" />:
+      <GridScan
+        gridScale={0.14}
+        scanOpacity={0.3}
+        bloomIntensity={0.45}
+        scanDuration={3.5}
+        scanDelay={2.5}
+        style={{ position: "absolute", inset: 0, zIndex: 0 }}
+      />
       <Header />
-
       {/* HERO — fills remaining viewport height, no scroll */}
       <div
         className="hero-grid"

@@ -1,0 +1,11 @@
+.gridscan {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none; /* let clicks/hover pass through to hero content */
+}
+.gridscan canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
