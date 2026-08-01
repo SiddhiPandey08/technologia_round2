@@ -9,30 +9,30 @@ import {
 import Dashboard from "./components/Dashboard.jsx";
 import Login from "./components/Login.jsx";
 import AdminDashboard from "./components/AdminDashboard.jsx"; // adjust path if needed
-import LandingPage from "./components/Landingpage .jsx";
-
-function LoginRoute({ onLoginSuccess }) {
-  const navigate = useNavigate();
-  return (
-    <Login
-      onLoginSuccess={() => {
-        onLoginSuccess();
-        navigate("/dashboard");
-      }}
-    />
-  );
-}
-
-function DashboardRoute({ authed, onLogout }) {
-  if (!authed) return <Navigate to="/login" replace />;
-  return <Dashboard onLogout={onLogout} />;
-}
-
+import MissionComplete from "./components/MissionComplete.jsx";
 export default function App() {
   const [authed, setAuthed] = useState(() =>
     Boolean(localStorage.getItem("recruitos_token")),
   );
 
+  // Listen for navigation or URL changes
+  useEffect(() => {
+    const handlePopState = () => setPathname(window.location.pathname);
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  // 1. If the URL is /admin, bypass student login and show the Admin Dashboard
+  if (pathname === "/admin" || pathname === "/admin/") {
+    return <AdminDashboard />;
+  }
+
+  // Check for Mission Complete Page
+  if (pathname === "/complete" || pathname === "/complete/") {
+    return <MissionComplete />;
+  }
+
+  // 2. Standard Candidate Flow
   function handleLogout() {
     localStorage.removeItem("recruitos_token");
     localStorage.removeItem("recruitos_candidate");
