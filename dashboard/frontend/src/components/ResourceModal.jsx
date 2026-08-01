@@ -103,19 +103,7 @@ export default function ResourceModal({ resource, onClose }) {
             display: "flex",
             justifyContent: "flex-end",
           }}
-        >
-          <a
-            href={resource.url}
-            download
-            style={{
-              color: "var(--amber)",
-              fontSize: "13px",
-              textDecoration: "none",
-            }}
-          >
-            Download original ↓
-          </a>
-        </div>
+        ></div>
       </div>
     </div>
   );
