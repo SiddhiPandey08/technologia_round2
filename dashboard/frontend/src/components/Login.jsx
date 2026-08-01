@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import AuthBackdrop from "./AuthBackdrop.jsx";
-import AccessPreloader from "./Accesspreloader.jsx";
+import InterviewWelcomePreloader from "./Accesspreloader.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:4000";
 const LAST_ID_KEY = "recruitos_last_candidate_id";
@@ -101,7 +101,7 @@ export default function Login({ onLoginSuccess }) {
   return (
     <AuthBackdrop>
       {showPreloader && (
-        <AccessPreloader onComplete={handlePreloaderComplete} />
+        <InterviewWelcomePreloader onComplete={handlePreloaderComplete} />
       )}
 
       <style>{`
