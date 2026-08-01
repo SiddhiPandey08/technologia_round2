@@ -1,10 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
 import Dashboard from "./components/Dashboard.jsx";
 import Login from "./components/Login.jsx";
 import AdminDashboard from "./components/AdminDashboard.jsx"; // adjust path if needed
 import MissionComplete from "./components/MissionComplete.jsx";
 export default function App() {
-  const [pathname, setPathname] = useState(() => window.location.pathname);
   const [authed, setAuthed] = useState(() =>
     Boolean(localStorage.getItem("recruitos_token")),
   );
@@ -33,9 +39,36 @@ export default function App() {
     setAuthed(false);
   }
 
-  if (!authed) {
-    return <Login onLoginSuccess={() => setAuthed(true)} />;
-  }
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* Public landing page */}
+        <Route path="/" element={<LandingPage />} />
 
-  return <Dashboard onLogout={handleLogout} />;
+        {/* Admin bypasses candidate auth entirely, same as before */}
+        <Route path="/admin" element={<AdminDashboard />} />
+
+        {/* Login redirects to dashboard if already authed */}
+        <Route
+          path="/login"
+          element={
+            authed ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <LoginRoute onLoginSuccess={() => setAuthed(true)} />
+            )
+          }
+        />
+
+        {/* Dashboard requires auth, bounces to /login otherwise */}
+        <Route
+          path="/dashboard"
+          element={<DashboardRoute authed={authed} onLogout={handleLogout} />}
+        />
+
+        {/* Fallback: unknown paths go back to landing */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
