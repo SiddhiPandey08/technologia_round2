@@ -2,10 +2,11 @@ import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { GridScan } from "./GridScan/GridScan.jsx";
-import acmSigaiLogo from "../assets/acm-sigai-logo-dark.png";
+import acmSigaiLogo from "../assets/acm-sigai-logo-dark.jpeg";
 import tcetLogo from "../assets/tcet.png";
 import tcsLogo from "../assets/tcs.png";
 import tcetSigaiLogo from "../assets/tcet-sigai.png";
+
 const NAV_LINKS = ["Missions", "Engineering", "Systems"];
 
 const MISSIONS_DATA = [
@@ -19,6 +20,13 @@ const LIVE_STATS = [
   { label: "candidates", target: 50, suffix: "" },
   { label: "time limit", target: 60, suffix: " min" },
   { label: "selected", target: 18, suffix: "" },
+];
+
+const ORGANIZER_LOGOS = [
+  { src: acmSigaiLogo, alt: "ACM SIGAI" },
+  { src: tcetLogo, alt: "TCET" },
+  { src: tcsLogo, alt: "TCS" },
+  { src: tcetSigaiLogo, alt: "TCET SIGAI" },
 ];
 
 /* ---------- typing effect ---------- */
@@ -80,22 +88,13 @@ function Header() {
           padding: "12px 24px",
         }}
       >
-        <div
-          className="header-brand"
-          style={{ display: "flex", alignItems: "center", gap: 16 }}
+        <span
+          className="mono flowing-wordmark"
+          style={{ fontSize: 22, fontWeight: 800, letterSpacing: "0.005em" }}
         >
-          <OrganizerLogos />
-          <span
-            aria-hidden
-            style={{ width: 1, height: 18, background: "var(--border)" }}
-          />
-          <span
-            className="mono flowing-wordmark"
-            style={{ fontSize: 22, fontWeight: 800, letterSpacing: "0.005em" }}
-          >
-            TECHNOLOGIA 2.0
-          </span>
-        </div>
+          TECHNOLOGIA 2.0
+        </span>
+
         <nav
           className="header-nav"
           style={{ display: "flex", alignItems: "center", gap: 24 }}
@@ -232,31 +231,7 @@ function MissionStepperStrip() {
     </div>
   );
 }
-function OrganizerLogos() {
-  const logos = [
-    { src: acmSigaiLogo, alt: "ACM SIGAI" },
-    { src: tcetLogo, alt: "TCET" },
-    { src: tcsLogo, alt: "TCS" },
-    { src: tcetSigaiLogo, alt: "TCET SIGAI" },
-  ];
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-      {logos.map((l) => (
-        <img
-          key={l.alt}
-          src={l.src}
-          alt={l.alt}
-          style={{
-            height: 22,
-            width: "auto",
-            opacity: 0.85,
-            filter: "grayscale(10%)",
-          }}
-        />
-      ))}
-    </div>
-  );
-}
+
 export default function LandingPage() {
   const containerRef = useRef(null);
   const mockupWrapRef = useRef(null);
@@ -277,6 +252,11 @@ export default function LandingPage() {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
       tl.from('[data-reveal="header"]', { y: -30, opacity: 0, duration: 0.5 })
+        .from(
+          '[data-reveal="organizer-strip"]',
+          { y: -10, opacity: 0, duration: 0.4 },
+          "-=0.3",
+        )
         .from(".eyebrow-reveal", { y: 12, opacity: 0, duration: 0.35 }, "-=0.2")
         .from(
           words,
@@ -387,12 +367,14 @@ export default function LandingPage() {
           .hero-grid { grid-template-columns: 1fr !important; }
           .mockup-col { display: none !important; }
         }
+        @media (max-width: 560px) {
+          [data-reveal="organizer-strip"] { display: none !important; }
+        }
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; }
         }
       `}</style>
       <div className="bg-dotgrid" />
-      <div className="bg-dotgrid" />:
       <GridScan
         gridScale={0.14}
         scanOpacity={0.3}
@@ -402,6 +384,77 @@ export default function LandingPage() {
         style={{ position: "absolute", inset: 0, zIndex: 0 }}
       />
       <Header />
+      <div
+        data-reveal="organizer-strip"
+        style={{
+          position: "absolute",
+          top: 66,
+          left: 0,
+          right: 0,
+          zIndex: 1,
+          width: "100%",
+          pointerEvents: "none",
+        }}
+      >
+        <span
+          className="mono"
+          style={{
+            position: "absolute",
+            left: 24,
+            top: 8,
+            fontSize: 10,
+            color: "var(--text-muted)",
+            letterSpacing: "0.08em",
+            flexShrink: 0,
+          }}
+        >
+          ORGANIZED BY
+        </span>
+
+        <div
+          style={{
+            maxWidth: 1040,
+            width: "100%",
+            margin: "0 auto",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 34,
+            flexWrap: "wrap",
+            padding: "0 24px",
+          }}
+        >
+          {ORGANIZER_LOGOS.map((l) => (
+            <div
+              key={l.alt}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                minWidth: 188,
+                height: 100,
+                padding: 0,
+                background: "transparent",
+                border: "none",
+                borderRadius: 0,
+                boxSizing: "border-box",
+              }}
+            >
+              <img
+                src={l.src}
+                alt={l.alt}
+                style={{
+                  height: 70,
+                  width: "auto",
+                  display: "block",
+                  objectFit: "contain",
+                  filter: "drop-shadow(0 0 12px rgba(255, 255, 255, 0.26))",
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
       {/* HERO — fills remaining viewport height, no scroll */}
       <div
         className="hero-grid"

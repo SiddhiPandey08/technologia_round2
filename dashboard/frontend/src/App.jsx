@@ -59,7 +59,7 @@ export default function App() {
             authed ? (
               <Navigate to="/dashboard" replace />
             ) : (
-              <LoginRoute onLoginSuccess={() => setAuthed(true)} />
+              <Login onLoginSuccess={() => setAuthed(true)} />
             )
           }
         />
@@ -67,7 +67,7 @@ export default function App() {
         {/* Dashboard requires auth, bounces to /login otherwise */}
         <Route
           path="/dashboard"
-          element={<DashboardRoute authed={authed} onLogout={handleLogout} />}
+          element={<Dashboard authed={authed} onLogout={handleLogout} />}
         />
 
         {/* Fallback: unknown paths go back to landing */}
