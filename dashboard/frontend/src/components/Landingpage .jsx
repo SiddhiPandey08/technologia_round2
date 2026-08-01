@@ -1,57 +1,20 @@
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const NAV_LINKS = ["Missions", "Engineering", "Systems"];
 
 const MISSIONS_DATA = [
-  {
-    number: 1,
-    title: "Understand the Project",
-    subtitle: "Requirements Analysis & Tech Selection",
-    xp: 100,
-    duration: 15,
-    skills: ["Requirement Analysis", "Client Communication"],
-    locked: false,
-  },
-  {
-    number: 2,
-    title: "Build the Foundation",
-    subtitle: "Core Architecture Setup",
-    xp: 200,
-    duration: 15,
-    skills: ["System Design", "Tech Selection"],
-    locked: true,
-  },
-  {
-    number: 3,
-    title: "Expand the System",
-    subtitle: "Feature Additions & Microservices",
-    xp: 300,
-    duration: 15,
-    skills: ["Scalability", "Integration"],
-    locked: true,
-  },
-  {
-    number: 4,
-    title: "Final Integration",
-    subtitle: "Production Readiness & Submission",
-    xp: 400,
-    duration: 15,
-    skills: ["Deployment Planning", "Risk Management"],
-    locked: true,
-  },
+  { number: 1, title: "Understand the Project", locked: false },
+  { number: 2, title: "Build the Foundation", locked: true },
+  { number: 3, title: "Expand the System", locked: true },
+  { number: 4, title: "Final Integration", locked: true },
 ];
 
-const TOTAL_XP = MISSIONS_DATA.reduce((sum, m) => sum + m.xp, 0);
-
 const LIVE_STATS = [
-  { label: "candidates in simulation", target: 50, suffix: "" },
-  { label: "completion time", target: 60, suffix: " min" },
-  { label: "will be selected", target: 18, suffix: "" },
+  { label: "candidates", target: 50, suffix: "" },
+  { label: "time limit", target: 60, suffix: " min" },
+  { label: "selected", target: 18, suffix: "" },
 ];
 
 /* ---------- typing effect ---------- */
@@ -79,7 +42,7 @@ function CountUp({ target, suffix = "", start }) {
     const obj = { val: 0 };
     gsap.to(obj, {
       val: target,
-      duration: 1.4,
+      duration: 1.2,
       ease: "power2.out",
       onUpdate: () => {
         if (ref.current) ref.current.textContent = Math.round(obj.val) + suffix;
@@ -90,30 +53,17 @@ function CountUp({ target, suffix = "", start }) {
   return <span ref={ref}>0{suffix}</span>;
 }
 
-/* ---------- sticky header (typography only) ---------- */
+/* ---------- sticky header ---------- */
 function Header() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
     <header
       data-reveal="header"
       style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 40,
-        backdropFilter: scrolled ? "blur(14px)" : "none",
-        WebkitBackdropFilter: scrolled ? "blur(14px)" : "none",
-        background: scrolled ? "rgba(10, 7, 19, 0.72)" : "transparent",
-        borderBottom: scrolled
-          ? "1px solid var(--border)"
-          : "1px solid transparent",
-        transition: "background 220ms ease, border-color 220ms ease",
+        flexShrink: 0,
+        borderBottom: "1px solid var(--border)",
+        background: "rgba(10, 7, 19, 0.72)",
+        backdropFilter: "blur(14px)",
+        WebkitBackdropFilter: "blur(14px)",
       }}
     >
       <div
@@ -123,33 +73,28 @@ function Header() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "16px 24px",
+          padding: "12px 24px",
         }}
       >
         <span
           className="mono flowing-wordmark"
-          style={{
-            fontSize: 28,
-            fontWeight: 800,
-            letterSpacing: "0.005em",
-          }}
+          style={{ fontSize: 22, fontWeight: 800, letterSpacing: "0.005em" }}
         >
           TECHNOLOGIA 2.0
         </span>
 
         <nav
-          style={{ display: "flex", alignItems: "center", gap: 28 }}
           className="header-nav"
+          style={{ display: "flex", alignItems: "center", gap: 24 }}
         >
           {NAV_LINKS.map((l) => (
             <span
               key={l}
               style={{
-                fontSize: 12.5,
+                fontSize: 12,
                 fontWeight: 600,
                 color: "var(--text-muted)",
                 letterSpacing: "0.03em",
-                cursor: "default",
               }}
             >
               {l}
@@ -163,10 +108,10 @@ function Header() {
             display: "flex",
             alignItems: "center",
             gap: 6,
-            fontSize: 10.5,
+            fontSize: 10,
             fontWeight: 600,
             color: "var(--teal)",
-            padding: "4px 10px",
+            padding: "3px 10px",
             borderRadius: 20,
             border: "1px solid rgba(43, 184, 153, 0.3)",
           }}
@@ -202,7 +147,7 @@ function AppFrame({ children, footer }) {
           display: "flex",
           alignItems: "center",
           gap: 8,
-          padding: "9px 14px",
+          padding: "8px 14px",
           borderBottom: "1px solid var(--border)",
           background: "var(--purple-900)",
         }}
@@ -221,7 +166,7 @@ function AppFrame({ children, footer }) {
         ))}
         <span
           className="mono"
-          style={{ fontSize: 10.5, color: "var(--text-muted)", marginLeft: 8 }}
+          style={{ fontSize: 10, color: "var(--text-muted)", marginLeft: 8 }}
         >
           recruitos.technova.io/mission-1
         </span>
@@ -241,7 +186,7 @@ function MissionStepperStrip() {
         justifyContent: "center",
         gap: 4,
         flexWrap: "wrap",
-        padding: "10px 14px",
+        padding: "8px 14px",
         borderTop: "1px solid var(--border)",
         background: "var(--purple-900)",
       }}
@@ -253,9 +198,9 @@ function MissionStepperStrip() {
         >
           <span
             style={{
-              fontSize: 10.5,
+              fontSize: 10,
               fontWeight: 600,
-              padding: "3px 10px",
+              padding: "3px 9px",
               borderRadius: 20,
               color: !s.locked ? "var(--text-primary)" : "var(--text-muted)",
               border: !s.locked
@@ -267,7 +212,7 @@ function MissionStepperStrip() {
             {i + 1} {s.title.split(" ")[0]}
           </span>
           {i < MISSIONS_DATA.length - 1 && (
-            <span style={{ color: "var(--text-muted)", fontSize: 11 }}>→</span>
+            <span style={{ color: "var(--text-muted)", fontSize: 10 }}>→</span>
           )}
         </div>
       ))}
@@ -275,68 +220,11 @@ function MissionStepperStrip() {
   );
 }
 
-/* ---------- mission card ---------- */
-// MissionCard — drop minHeight, shrink padding, drop the skills row
-function MissionCard({ mission }) {
-  return (
-    <div
-      className="mission-reveal-card"
-      style={{
-        border: mission.locked
-          ? "1px solid var(--border)"
-          : "1px solid var(--border-strong)",
-        borderRadius: 12,
-        padding: 14, // was 20
-        background: "var(--panel-bg)",
-        opacity: mission.locked ? 0.75 : 1,
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      {/* mission number / duration / XP row — keep as is */}
-      <h3
-        style={{
-          fontFamily: "var(--font-display)",
-          fontSize: 14,
-          fontWeight: 700,
-          margin: "0 0 3px",
-        }}
-      >
-        {mission.title}
-      </h3>
-      <p style={{ fontSize: 11, color: "var(--text-muted)", margin: 0 }}>
-        {mission.subtitle}
-      </p>
-      {/* skills tags block removed entirely to save vertical space */}
-      <div
-        style={{
-          marginTop: 8,
-          paddingTop: 8,
-          borderTop: "1px solid var(--border)",
-        }}
-      >
-        {mission.locked ? (
-          <div style={{ fontSize: 10.5, color: "var(--text-muted)" }}>
-            🔒 Locked
-          </div>
-        ) : (
-          <div
-            style={{ fontSize: 10.5, color: "var(--teal)", fontWeight: 600 }}
-          >
-            ● Ready
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
 export default function LandingPage() {
   const containerRef = useRef(null);
   const mockupWrapRef = useRef(null);
   const mockupFrameRef = useRef(null);
   const rightPanelRef = useRef(null);
-  const statsRef = useRef(null);
-  const missionsGridRef = useRef(null);
   const [typingActive, setTypingActive] = useState(false);
   const [statsStart, setStatsStart] = useState(false);
 
@@ -349,55 +237,39 @@ export default function LandingPage() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       const words = gsap.utils.toArray(".word-reveal", containerRef.current);
-
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-      tl.from('[data-reveal="header"]', { y: -30, opacity: 0, duration: 0.55 })
-        .from(".eyebrow-reveal", { y: 12, opacity: 0, duration: 0.4 }, "-=0.25")
+      tl.from('[data-reveal="header"]', { y: -30, opacity: 0, duration: 0.5 })
+        .from(".eyebrow-reveal", { y: 12, opacity: 0, duration: 0.35 }, "-=0.2")
         .from(
           words,
-          { y: 26, opacity: 0, duration: 0.55, stagger: 0.07 },
-          "-=0.2",
+          { y: 26, opacity: 0, duration: 0.5, stagger: 0.07 },
+          "-=0.15",
         )
-        .from(".subtext-reveal", { y: 12, opacity: 0, duration: 0.45 }, "-=0.3")
-        .from(".cta-reveal", { y: 10, opacity: 0, duration: 0.4 }, "-=0.28")
+        .from(".subtext-reveal", { y: 12, opacity: 0, duration: 0.4 }, "-=0.25")
+        .from(".cta-reveal", { y: 10, opacity: 0, duration: 0.35 }, "-=0.22")
+        .from(".stats-reveal", { y: 8, opacity: 0, duration: 0.35 }, "-=0.2")
         .from(
           mockupWrapRef.current,
           {
-            y: 36,
+            y: 30,
             opacity: 0,
             scale: 0.96,
             rotateX: 6,
-            duration: 0.75,
+            duration: 0.65,
             transformPerspective: 800,
           },
-          "-=0.25",
+          "-=0.3",
         )
-        .call(() => setTypingActive(true))
+        .call(() => {
+          setTypingActive(true);
+          setStatsStart(true);
+        })
         .from(
           rightPanelRef.current,
-          { x: 18, opacity: 0, duration: 0.5 },
-          "+=0.85",
+          { x: 18, opacity: 0, duration: 0.45 },
+          "+=0.7",
         );
-
-      // Missions grid + stats reveal on scroll
-      gsap.from(
-        missionsGridRef.current ? missionsGridRef.current.children : [],
-        {
-          y: 24,
-          opacity: 0,
-          stagger: 0.08,
-          duration: 0.5,
-          ease: "power3.out",
-          scrollTrigger: { trigger: missionsGridRef.current, start: "top 85%" },
-        },
-      );
-
-      ScrollTrigger.create({
-        trigger: statsRef.current,
-        start: "top 90%",
-        onEnter: () => setStatsStart(true),
-      });
     }, containerRef);
 
     return () => ctx.revert();
@@ -437,19 +309,6 @@ export default function LandingPage() {
     };
   }, []);
 
-  /* fallback: trigger stats count-up via simple viewport check if ScrollTrigger plugin isn't registered */
-  useEffect(() => {
-    const el = statsRef.current;
-    if (!el) return;
-    const onScroll = () => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.9) setStatsStart(true);
-    };
-    window.addEventListener("scroll", onScroll);
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
     <div
       ref={containerRef}
@@ -461,7 +320,6 @@ export default function LandingPage() {
         flexDirection: "column",
       }}
     >
-      {" "}
       <style>{`
         .bg-dotgrid {
           position: absolute;
@@ -469,8 +327,8 @@ export default function LandingPage() {
           z-index: 0;
           background-image: radial-gradient(rgba(168, 85, 247, 0.16) 1px, transparent 1px);
           background-size: 26px 26px;
-          -webkit-mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 45%, transparent);
-          mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 45%, transparent);
+          -webkit-mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 70%, transparent);
+          mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 70%, transparent);
           pointer-events: none;
         }
         .flowing-wordmark {
@@ -485,13 +343,12 @@ export default function LandingPage() {
           0% { background-position: 0% 50%; }
           100% { background-position: -300% 50%; }
         }
-        .mission-reveal-card { transition: border-color 160ms ease, transform 160ms ease; }
-        .mission-reveal-card:hover { border-color: var(--violet) !important; transform: translateY(-3px); }
         @media (max-width: 720px) {
           .header-nav, .header-status { display: none !important; }
         }
         @media (max-width: 860px) {
           .hero-grid { grid-template-columns: 1fr !important; }
+          .mockup-col { display: none !important; }
         }
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; }
@@ -499,15 +356,19 @@ export default function LandingPage() {
       `}</style>
       <div className="bg-dotgrid" />
       <Header />
-      {/* HERO */}
+
+      {/* HERO — fills remaining viewport height, no scroll */}
       <div
         className="hero-grid"
         style={{
           position: "relative",
           zIndex: 1,
+          flex: 1,
+          minHeight: 0,
           maxWidth: 1040,
+          width: "100%",
           margin: "0 auto",
-          padding: "20px 24px 24px",
+          padding: "0 24px",
           display: "grid",
           gridTemplateColumns: "0.95fr 1.05fr",
           gap: 44,
@@ -529,9 +390,9 @@ export default function LandingPage() {
           <h1
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: "clamp(32px, 4.2vw, 50px)",
+              fontSize: "clamp(30px, 3.8vw, 46px)",
               fontWeight: 700,
-              margin: "0 0 16px",
+              margin: "0 0 14px",
               lineHeight: 1.08,
               color: "var(--text-primary)",
             }}
@@ -549,9 +410,9 @@ export default function LandingPage() {
           <p
             className="subtext-reveal"
             style={{
-              fontSize: 14.5,
+              fontSize: 14,
               color: "var(--text-secondary)",
-              lineHeight: 1.65,
+              lineHeight: 1.6,
               margin: "0 0 20px",
               maxWidth: 400,
             }}
@@ -563,7 +424,12 @@ export default function LandingPage() {
 
           <div
             className="cta-reveal"
-            style={{ display: "flex", alignItems: "center", gap: 18 }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 18,
+              marginBottom: 18,
+            }}
           >
             <Link
               to="/login"
@@ -584,10 +450,48 @@ export default function LandingPage() {
               60 min · 4 missions
             </span>
           </div>
+
+          {/* compact inline live stats — replaces the old full-width stats banner */}
+          <div className="stats-reveal" style={{ display: "flex", gap: 20 }}>
+            {LIVE_STATS.map((s) => (
+              <div key={s.label}>
+                <p
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: 18,
+                    fontWeight: 700,
+                    margin: 0,
+                    color: "var(--text-primary)",
+                  }}
+                >
+                  <CountUp
+                    target={s.target}
+                    suffix={s.suffix}
+                    start={statsStart}
+                  />
+                </p>
+                <p
+                  className="mono"
+                  style={{
+                    fontSize: 9.5,
+                    color: "var(--text-muted)",
+                    letterSpacing: "0.04em",
+                    margin: 0,
+                  }}
+                >
+                  {s.label}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* mockup */}
-        <div ref={mockupWrapRef} style={{ position: "relative" }}>
+        <div
+          className="mockup-col"
+          ref={mockupWrapRef}
+          style={{ position: "relative" }}
+        >
           <div
             aria-hidden
             style={{
@@ -611,16 +515,16 @@ export default function LandingPage() {
                 style={{
                   display: "grid",
                   gridTemplateColumns: "1fr 1fr",
-                  minHeight: 250,
+                  minHeight: 220,
                 }}
               >
                 <div
                   style={{
-                    padding: 18,
+                    padding: 16,
                     borderRight: "1px solid var(--border)",
                     display: "flex",
                     flexDirection: "column",
-                    gap: 12,
+                    gap: 10,
                   }}
                 >
                   <div
@@ -633,7 +537,7 @@ export default function LandingPage() {
                     <span
                       className="mono"
                       style={{
-                        fontSize: 10.5,
+                        fontSize: 10,
                         color: "var(--text-muted)",
                         letterSpacing: "0.05em",
                       }}
@@ -642,7 +546,7 @@ export default function LandingPage() {
                     </span>
                     <span
                       style={{
-                        fontSize: 9.5,
+                        fontSize: 9,
                         color: "var(--teal)",
                         padding: "2px 8px",
                         borderRadius: 20,
@@ -657,12 +561,12 @@ export default function LandingPage() {
                       background: "var(--surface-2)",
                       border: "1px solid var(--border)",
                       borderRadius: 10,
-                      padding: 14,
+                      padding: 12,
                     }}
                   >
                     <p
                       style={{
-                        fontSize: 9.5,
+                        fontSize: 9,
                         color: "var(--text-muted)",
                         margin: "0 0 6px",
                         letterSpacing: "0.05em",
@@ -673,7 +577,7 @@ export default function LandingPage() {
                     <p
                       style={{
                         fontFamily: "var(--font-display)",
-                        fontSize: 13.5,
+                        fontSize: 13,
                         fontWeight: 700,
                         margin: "0 0 8px",
                         color: "var(--text-primary)",
@@ -683,11 +587,11 @@ export default function LandingPage() {
                     </p>
                     <p
                       style={{
-                        fontSize: 11.5,
+                        fontSize: 11,
                         color: "var(--text-secondary)",
-                        lineHeight: 1.55,
+                        lineHeight: 1.5,
                         margin: 0,
-                        minHeight: 54,
+                        minHeight: 48,
                       }}
                     >
                       {typed}
@@ -709,10 +613,10 @@ export default function LandingPage() {
                 <div
                   ref={rightPanelRef}
                   style={{
-                    padding: 18,
+                    padding: 16,
                     display: "flex",
                     flexDirection: "column",
-                    gap: 11,
+                    gap: 10,
                   }}
                 >
                   <div
@@ -725,7 +629,7 @@ export default function LandingPage() {
                     <span
                       className="mono"
                       style={{
-                        fontSize: 9.5,
+                        fontSize: 9,
                         color: "var(--violet)",
                         letterSpacing: "0.06em",
                       }}
@@ -734,7 +638,7 @@ export default function LandingPage() {
                     </span>
                     <span
                       style={{
-                        fontSize: 9.5,
+                        fontSize: 9,
                         color: "var(--red)",
                         padding: "2px 8px",
                         borderRadius: 20,
@@ -747,7 +651,7 @@ export default function LandingPage() {
                   <h3
                     style={{
                       fontFamily: "var(--font-display)",
-                      fontSize: 16,
+                      fontSize: 15,
                       fontWeight: 700,
                       margin: 0,
                       color: "var(--text-primary)",
@@ -824,109 +728,6 @@ export default function LandingPage() {
               </div>
             </AppFrame>
           </div>
-        </div>
-      </div>
-      {/* MISSIONS BREAKDOWN */}
-      <div
-        style={{
-          position: "relative",
-          zIndex: 1,
-          maxWidth: 1040,
-          margin: "0 auto",
-          padding: "8px 24px 12px",
-        }}
-      >
-        <div style={{ textAlign: "center", marginBottom: 12 }}>
-          <p
-            className="mono"
-            style={{
-              fontSize: 11,
-              color: "var(--text-muted)",
-              letterSpacing: "0.08em",
-              margin: "0 0 8px",
-            }}
-          >
-            four engineering phases · {TOTAL_XP} XP total
-          </p>
-          <h2
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: 24,
-              fontWeight: 700,
-              margin: 0,
-              color: "var(--text-primary)",
-            }}
-          >
-            The mission sequence
-          </h2>
-        </div>
-
-        <div
-          ref={missionsGridRef}
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))",
-            gap: 16,
-          }}
-        >
-          {MISSIONS_DATA.map((m) => (
-            <MissionCard key={m.number} mission={m} />
-          ))}
-        </div>
-      </div>
-      {/* LIVE STATS — gamified competitive framing */}
-      <div
-        ref={statsRef}
-        style={{
-          position: "relative",
-          zIndex: 1,
-          maxWidth: 1040,
-          margin: "0 auto",
-          padding: "0 24px 64px",
-        }}
-      >
-        <div
-          style={{
-            border: "1px solid var(--border)",
-            borderRadius: 14,
-            padding: "14px 28px",
-            display: "flex",
-            justifyContent: "space-around",
-            flexWrap: "wrap",
-            gap: 24,
-            background: "var(--panel-bg)",
-          }}
-        >
-          {LIVE_STATS.map((s) => (
-            <div key={s.label} style={{ textAlign: "center" }}>
-              <p
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: 30,
-                  fontWeight: 700,
-                  margin: "0 0 4px",
-                  color: "var(--text-primary)",
-                }}
-              >
-                <CountUp
-                  target={s.target}
-                  suffix={s.suffix}
-                  start={statsStart}
-                />
-              </p>
-              <p
-                className="mono"
-                style={{
-                  fontSize: 10.5,
-                  color: "var(--text-muted)",
-                  letterSpacing: "0.05em",
-                  margin: 0,
-                }}
-              >
-                {s.label}
-              </p>
-            </div>
-          ))}
         </div>
       </div>
     </div>
