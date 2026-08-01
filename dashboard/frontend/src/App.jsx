@@ -17,6 +17,7 @@ export default function App() {
   const [authed, setAuthed] = useState(() =>
     Boolean(localStorage.getItem("recruitos_token")),
   );
+  const [pathname, setPathname] = useState(window.location.pathname);
 
   // Listen for navigation or URL changes
   useEffect(() => {
