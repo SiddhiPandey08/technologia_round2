@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Dashboard from "./components/Dashboard.jsx";
 import Login from "./components/Login.jsx";
 import AdminDashboard from "./components/AdminDashboard.jsx"; // adjust path if needed
+import MissionComplete from "./components/MissionComplete.jsx";
 export default function App() {
   const [pathname, setPathname] = useState(() => window.location.pathname);
   const [authed, setAuthed] = useState(() =>
@@ -18,6 +19,11 @@ export default function App() {
   // 1. If the URL is /admin, bypass student login and show the Admin Dashboard
   if (pathname === "/admin" || pathname === "/admin/") {
     return <AdminDashboard />;
+  }
+
+  // Check for Mission Complete Page
+  if (pathname === "/complete" || pathname === "/complete/") {
+    return <MissionComplete />;
   }
 
   // 2. Standard Candidate Flow

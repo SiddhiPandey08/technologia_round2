@@ -625,6 +625,10 @@ export default function Dashboard({ onLogout }) {
       }
 
       setWorkspaceMission(null);
+
+      // Navigate to the Mission Complete page
+      window.history.pushState({}, "", "/complete");
+      window.dispatchEvent(new PopStateEvent("popstate"));
     } catch (err) {
       console.error("Failed to submit Mission 4:", err);
       alert(`Error submitting Mission 4: ${err.message}`);

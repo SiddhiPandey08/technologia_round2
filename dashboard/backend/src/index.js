@@ -13,6 +13,7 @@ const allowedOrigins = [
   process.env.CLIENT_ORIGIN,
   "https://technologia-round2-qqjf.vercel.app",
   "http://localhost:5173",
+  "http://127.0.0.1:5173"
 ].filter(Boolean); // Filter out undefined values if CLIENT_ORIGIN isn't set
 
 app.use(
