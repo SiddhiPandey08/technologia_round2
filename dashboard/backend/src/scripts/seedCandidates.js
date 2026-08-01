@@ -1,3 +1,4 @@
+//node src/scripts/seedCandidates.js
 import "dotenv/config";
 import mongoose from "mongoose";
 import XLSX from "xlsx";

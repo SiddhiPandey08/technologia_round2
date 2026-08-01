@@ -12,6 +12,71 @@ import Mission3Addons from "./Mission3Addons.jsx";
 import Mission4Workspace from "./Mission4Workspace.jsx";
 
 // Standard Modals
+function WorkspaceSkeleton() {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <style>{`
+        @keyframes skeleton-pulse {
+          0% { opacity: 0.45; }
+          50% { opacity: 0.9; }
+          100% { opacity: 0.45; }
+        }
+        .skeleton-block {
+          background: var(--bg-elevated, #1c1c1f);
+          border-radius: 6px;
+          animation: skeleton-pulse 1.4s ease-in-out infinite;
+        }
+      `}</style>
+
+      {/* title row */}
+      <div className="skeleton-block" style={{ width: "40%", height: 22 }} />
+      <div className="skeleton-block" style={{ width: "70%", height: 14 }} />
+
+      {/* card-ish body */}
+      <div
+        style={{
+          border: "1px solid var(--border)",
+          borderRadius: 10,
+          padding: 16,
+          display: "flex",
+          flexDirection: "column",
+          gap: 12,
+        }}
+      >
+        <div className="skeleton-block" style={{ width: "30%", height: 16 }} />
+        <div className="skeleton-block" style={{ width: "100%", height: 40 }} />
+        <div className="skeleton-block" style={{ width: "100%", height: 40 }} />
+        <div className="skeleton-block" style={{ width: "60%", height: 40 }} />
+      </div>
+
+      <div
+        style={{
+          border: "1px solid var(--border)",
+          borderRadius: 10,
+          padding: 16,
+          display: "flex",
+          flexDirection: "column",
+          gap: 12,
+        }}
+      >
+        <div className="skeleton-block" style={{ width: "35%", height: 16 }} />
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <div className="skeleton-block" style={{ width: 120, height: 60 }} />
+          <div className="skeleton-block" style={{ width: 120, height: 60 }} />
+          <div className="skeleton-block" style={{ width: 120, height: 60 }} />
+        </div>
+      </div>
+
+      {/* footer / submit button */}
+      <div style={{ display: "flex", justifyContent: "flex-end", gap: 10 }}>
+        <div
+          className="skeleton-block"
+          style={{ width: 140, height: 36, borderRadius: 6 }}
+        />
+      </div>
+    </div>
+  );
+}
 function GlossaryPromptModal({ onOpenGlossary, onSkip }) {
   return (
     <div
@@ -387,7 +452,7 @@ export default function Dashboard({ onLogout }) {
 
       try {
         const token = localStorage.getItem("recruitos_token");
-        const res = await fetch(`/${API_BASE}/api/session/tab-switch`, {
+        const res = await fetch(`${API_BASE}/api/session/tab-switch`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -525,7 +590,7 @@ export default function Dashboard({ onLogout }) {
     if (!token) throw new Error("Authentication token missing.");
 
     const response = await fetch(
-      `/${BASE}/api/missions/${missionNumber}/answers`,
+      `${API_BASE}/api/missions/${missionNumber}/answers`,
       {
         method: "POST",
         headers: {
@@ -552,7 +617,7 @@ export default function Dashboard({ onLogout }) {
       await handleWorkspaceAnswersSave(1, discoveryData);
 
       const token = localStorage.getItem("recruitos_token");
-      const completeRes = await fetch(`/${BASE}/api/missions/1/complete`, {
+      const completeRes = await fetch(`${API_BASE}/api/missions/1/complete`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -593,7 +658,7 @@ export default function Dashboard({ onLogout }) {
 
       await handleWorkspaceAnswersSave(4, m4Data);
 
-      await fetch(`/${API_BASE}/api/missions/4/architecture`, {
+      await fetch(`${API_BASE}/api/missions/4/architecture`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -609,7 +674,7 @@ export default function Dashboard({ onLogout }) {
         }),
       });
 
-      const completeRes = await fetch(`/${API_BASE}/api/missions/4/complete`, {
+      const completeRes = await fetch(`${API_BASE}/api/missions/4/complete`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -850,9 +915,7 @@ export default function Dashboard({ onLogout }) {
           >
             <div>
               {workspaceLoading ? (
-                <p style={{ fontSize: 13, color: "var(--text-muted)" }}>
-                  Loading workspace…
-                </p>
+                <WorkspaceSkeleton />
               ) : workspaceMission?.number === 1 ? (
                 <DiscoveryWorkspace onComplete={handleDiscoveryComplete} />
               ) : workspaceMission?.number === 2 ? (
@@ -932,10 +995,12 @@ export default function Dashboard({ onLogout }) {
         <TabWarningModal
           count={tabSwitches}
           maxCount={3}
-          onClose={() => setShowTabWarning(false)}
+          onClose={() => {
+            setShowTabWarning(false);
+            enterFullscreen();
+          }}
         />
       )}
-
       {tabSwitches >= 3 && (
         <div
           style={{
