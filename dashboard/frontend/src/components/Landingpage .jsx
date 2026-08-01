@@ -356,7 +356,6 @@ export default function LandingPage() {
         }
       `}</style>
       <div className="bg-dotgrid" />
-      // ...inside the root container, right after{" "}
       <div className="bg-dotgrid" />:
       <GridScan
         gridScale={0.14}
