@@ -134,7 +134,7 @@ function Header() {
             letterSpacing: "0.005em",
           }}
         >
-          RECRUIT.OS
+          TECHNOLOGIA 2.0
         </span>
 
         <nav
@@ -276,6 +276,7 @@ function MissionStepperStrip() {
 }
 
 /* ---------- mission card ---------- */
+// MissionCard — drop minHeight, shrink padding, drop the skills row
 function MissionCard({ mission }) {
   return (
     <div
@@ -284,132 +285,51 @@ function MissionCard({ mission }) {
         border: mission.locked
           ? "1px solid var(--border)"
           : "1px solid var(--border-strong)",
-        borderRadius: 14,
-        padding: 20,
+        borderRadius: 12,
+        padding: 14, // was 20
         background: "var(--panel-bg)",
-        position: "relative",
         opacity: mission.locked ? 0.75 : 1,
         display: "flex",
         flexDirection: "column",
-        minHeight: 240,
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: 10,
-          gap: 6,
-        }}
-      >
-        <span
-          className="mono"
-          style={{
-            fontSize: 10.5,
-            color: "var(--gold)",
-            letterSpacing: "0.05em",
-          }}
-        >
-          MISSION {String(mission.number).padStart(2, "0")}
-        </span>
-        <div style={{ display: "flex", gap: 6 }}>
-          <span
-            style={{
-              fontSize: 10,
-              fontWeight: 700,
-              color: "var(--text-secondary)",
-              border: "1px solid var(--border)",
-              padding: "2px 8px",
-              borderRadius: 20,
-              whiteSpace: "nowrap",
-            }}
-          >
-            {mission.duration} MIN
-          </span>
-          <span
-            style={{
-              fontSize: 10.5,
-              fontWeight: 700,
-              color: "var(--violet)",
-              background: "var(--violet-dim)",
-              padding: "2px 9px",
-              borderRadius: 20,
-              whiteSpace: "nowrap",
-            }}
-          >
-            +{mission.xp} XP
-          </span>
-        </div>
-      </div>
-
+      {/* mission number / duration / XP row — keep as is */}
       <h3
         style={{
           fontFamily: "var(--font-display)",
-          fontSize: 16.5,
+          fontSize: 14,
           fontWeight: 700,
-          margin: "0 0 4px",
-          color: "var(--text-primary)",
+          margin: "0 0 3px",
         }}
       >
         {mission.title}
       </h3>
-      <p
-        style={{ fontSize: 12, color: "var(--text-muted)", margin: "0 0 14px" }}
-      >
+      <p style={{ fontSize: 11, color: "var(--text-muted)", margin: 0 }}>
         {mission.subtitle}
       </p>
-
-      <div
-        style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 14 }}
-      >
-        {mission.skills.map((sk) => (
-          <span
-            key={sk}
-            style={{
-              fontSize: 10.5,
-              padding: "4px 9px",
-              borderRadius: 7,
-              border: "1px solid var(--border)",
-              color: "var(--text-secondary)",
-            }}
-          >
-            {sk}
-          </span>
-        ))}
-      </div>
-
+      {/* skills tags block removed entirely to save vertical space */}
       <div
         style={{
-          marginTop: "auto",
-          paddingTop: 12,
+          marginTop: 8,
+          paddingTop: 8,
           borderTop: "1px solid var(--border)",
         }}
       >
         {mission.locked ? (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              fontSize: 11.5,
-              color: "var(--text-muted)",
-            }}
-          >
-            🔒 Unlocks after Mission {mission.number - 1}
+          <div style={{ fontSize: 10.5, color: "var(--text-muted)" }}>
+            🔒 Locked
           </div>
         ) : (
           <div
-            style={{ fontSize: 11.5, color: "var(--teal)", fontWeight: 600 }}
+            style={{ fontSize: 10.5, color: "var(--teal)", fontWeight: 600 }}
           >
-            ● Ready to start
+            ● Ready
           </div>
         )}
       </div>
     </div>
   );
 }
-
 export default function LandingPage() {
   const containerRef = useRef(null);
   const mockupWrapRef = useRef(null);
@@ -531,7 +451,17 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div ref={containerRef} style={{ position: "relative" }}>
+    <div
+      ref={containerRef}
+      style={{
+        position: "relative",
+        height: "100vh",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      {" "}
       <style>{`
         .bg-dotgrid {
           position: absolute;
@@ -567,11 +497,8 @@ export default function LandingPage() {
           * { animation: none !important; }
         }
       `}</style>
-
       <div className="bg-dotgrid" />
-
       <Header />
-
       {/* HERO */}
       <div
         className="hero-grid"
@@ -580,7 +507,7 @@ export default function LandingPage() {
           zIndex: 1,
           maxWidth: 1040,
           margin: "0 auto",
-          padding: "48px 24px 40px",
+          padding: "20px 24px 24px",
           display: "grid",
           gridTemplateColumns: "0.95fr 1.05fr",
           gap: 44,
@@ -594,7 +521,7 @@ export default function LandingPage() {
               fontSize: 11,
               color: "var(--text-muted)",
               letterSpacing: "0.08em",
-              margin: "0 0 14px",
+              margin: "0 0 8px",
             }}
           >
             technova solutions · graduate onboarding program
@@ -893,28 +820,12 @@ export default function LandingPage() {
                       </p>
                     </div>
                   </div>
-                  <button
-                    style={{
-                      marginTop: "auto",
-                      background: "var(--violet)",
-                      color: "#fff",
-                      fontWeight: 700,
-                      fontSize: 12,
-                      padding: "9px 0",
-                      borderRadius: 8,
-                      border: "none",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Start Mission
-                  </button>
                 </div>
               </div>
             </AppFrame>
           </div>
         </div>
       </div>
-
       {/* MISSIONS BREAKDOWN */}
       <div
         style={{
@@ -922,10 +833,10 @@ export default function LandingPage() {
           zIndex: 1,
           maxWidth: 1040,
           margin: "0 auto",
-          padding: "20px 24px 56px",
+          padding: "8px 24px 12px",
         }}
       >
-        <div style={{ textAlign: "center", marginBottom: 26 }}>
+        <div style={{ textAlign: "center", marginBottom: 12 }}>
           <p
             className="mono"
             style={{
@@ -963,7 +874,6 @@ export default function LandingPage() {
           ))}
         </div>
       </div>
-
       {/* LIVE STATS — gamified competitive framing */}
       <div
         ref={statsRef}
@@ -979,7 +889,7 @@ export default function LandingPage() {
           style={{
             border: "1px solid var(--border)",
             borderRadius: 14,
-            padding: "24px 28px",
+            padding: "14px 28px",
             display: "flex",
             justifyContent: "space-around",
             flexWrap: "wrap",
