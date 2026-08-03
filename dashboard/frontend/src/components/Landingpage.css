@@ -1,0 +1,268 @@
+/* ==========================================
+   GLOBAL & ROOT VARS
+   ========================================== */
+:root {
+  --gold: #f59e0b;
+  --gold-bright: #fbbf24;
+  --teal: #2bb899;
+  --violet: #a855f7;
+  --violet-dim: rgba(168, 85, 247, 0.15);
+  --border: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(168, 85, 247, 0.4);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --font-mono: "JetBrains Mono", monospace, sans-serif;
+  --font-display: "Inter", sans-serif;
+}
+
+/* Background Overlay */
+.hero-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(10, 7, 19, 0.25) 0%,
+    rgba(10, 7, 19, 0.95) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bg-dotgrid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: radial-gradient(
+    rgba(168, 85, 247, 0.2) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+
+/* Gradient Title */
+.gradient-text {
+  background: linear-gradient(135deg, #f59e0b 0%, #a855f7 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.flowing-wordmark {
+  background: linear-gradient(
+    90deg,
+    var(--gold),
+    var(--violet),
+    var(--gold-bright),
+    var(--violet)
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: wordmark-flow 6s linear infinite;
+}
+
+@keyframes wordmark-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: -300% 50%;
+  }
+}
+
+/* ==========================================
+   HUD STATUS BADGES & BUTTONS
+   ========================================== */
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: #f59e0b;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(43, 184, 153, 0.1);
+  border: 1px solid rgba(43, 184, 153, 0.3);
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow: 0 0 8px var(--teal);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.8);
+  }
+}
+
+.gamified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #ef4444;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 20px;
+}
+
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 8px #ef4444;
+}
+
+/* Gamified CTA Button */
+.btn-gamified {
+  display: inline-block;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #0f172a;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  padding: 14px 34px;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow:
+    0 0 22px rgba(245, 158, 11, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transition: all 0.2s ease;
+  border: 1px solid #fbbf24;
+}
+
+.btn-gamified:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 30px rgba(245, 158, 11, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* ==========================================
+   HUD STATS GRID
+   ========================================== */
+.stats-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 620px;
+}
+
+.stat-card {
+  flex: 1;
+  background: rgba(20, 14, 40, 0.6);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  border-radius: 10px;
+  padding: 14px 18px;
+  backdrop-filter: blur(8px);
+}
+
+.stat-number {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--gold);
+}
+
+.stat-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ==========================================
+   BRIGHT TOP LOGO MARQUEE
+   ========================================== */
+.marquee-container {
+  width: 100%;
+  max-width: 520px; /* controls how "centralised" it looks on the page */
+  margin: 0 auto;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+}
+
+.marquee-content {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  animation: marquee-scroll 18s linear infinite;
+  flex-shrink: 0;
+}
+
+.marquee-container:hover .marquee-content {
+  animation-play-state: paused; /* optional nice-to-have */
+}
+
+.partner-logo {
+  height: 58px;
+  width: 96px; /* fixed width, not auto — prevents reflow on load */
+  object-fit: contain;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+/* Mobile Responsiveness */
+@media (max-width: 640px) {
+  .header-nav,
+  .header-status {
+    display: none !important;
+  }
+  .stats-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .stat-card {
+    padding: 10px;
+  }
+}

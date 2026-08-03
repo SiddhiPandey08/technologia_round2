@@ -1,10 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
-export default function DiscoveryWorkspace({ onComplete }) {
+export default function DiscoveryWorkspace({ onComplete, onAutosave }) {
   const [frontend, setFrontend] = useState("");
   const [database, setDatabase] = useState("");
   const [justification, setJustification] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const debounceRef = useRef(null);
+  const isSubmittingRef = useRef(false); // ← add this
+
+  // Autosave whatever's currently filled in, 1.5s after the last edit.
+  useEffect(() => {
+    if (!frontend && !database && !justification.trim()) return;
+    if (isSubmittingRef.current) return; // ← don't schedule autosave mid-submit
+
+    clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      onAutosave?.({ frontend, database, justification });
+    }, 1500);
+    return () => clearTimeout(debounceRef.current);
+  }, [frontend, database, justification, onAutosave]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -15,15 +30,16 @@ export default function DiscoveryWorkspace({ onComplete }) {
       return;
     }
 
+    // Cancel any pending autosave so it can't race the submit's own save.
+    clearTimeout(debounceRef.current);
+    isSubmittingRef.current = true;
+
     setIsSubmitting(true);
     try {
-      await onComplete({
-        frontend,
-        database,
-        justification,
-      });
+      await onComplete({ frontend, database, justification });
     } catch (err) {
       console.error(err);
+      isSubmittingRef.current = false; // allow autosave again if submit failed
     } finally {
       setIsSubmitting(false);
     }
@@ -89,7 +105,6 @@ export default function DiscoveryWorkspace({ onComplete }) {
         onSubmit={handleSubmit}
         style={{ display: "flex", flexDirection: "column", gap: 16 }}
       >
-        {/* Section 1: Primary Frontend Framework */}
         <div>
           <label
             style={{
@@ -126,7 +141,6 @@ export default function DiscoveryWorkspace({ onComplete }) {
           </select>
         </div>
 
-        {/* Section 2: Core Database Engine */}
         <div>
           <label
             style={{
@@ -169,7 +183,6 @@ export default function DiscoveryWorkspace({ onComplete }) {
           </select>
         </div>
 
-        {/* Section 3: Engineering Justification */}
         <div>
           <label
             style={{

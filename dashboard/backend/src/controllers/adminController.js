@@ -1,6 +1,7 @@
 import Candidate from "../models/Candidate.js";
 import Attempt from "../models/Attempt.js";
 import Architecture from "../models/Architecture.js";
+import mongoose from "mongoose";
 
 // GET /api/admin/candidates — one row per candidate with a quick progress summary.
 export async function listCandidates(req, res) {
@@ -29,22 +30,20 @@ export async function listCandidates(req, res) {
 
 export async function getCandidateDetail(req, res) {
   try {
-    const { id } = req.params; // Expecting the MongoDB _id string from frontend
+    const { id } = req.params;
+    const query = mongoose.isValidObjectId(id)
+      ? { $or: [{ _id: id }, { candidateId: id }] }
+      : { candidateId: id };
 
-    // 1. Find candidate by _id (or fallback to human candidateId)
-    const candidate = await Candidate.findOne({
-      $or: [{ _id: id }, { candidateId: id }],
-    });
-
+    const candidate = await Candidate.findOne(query);
     if (!candidate) {
       return res.status(404).json({ error: "Candidate not found." });
     }
 
-    // 2. Fetch associated attempt using candidate._id
-    const attempt = await Attempt.findOne({ candidate: candidate._id });
-
-    // 3. Fetch associated architectures using candidate._id
-    const architectures = await Architecture.find({ candidate: candidate._id });
+    const [attempt, architectures] = await Promise.all([
+      Attempt.findOne({ candidate: candidate._id }),
+      Architecture.find({ candidate: candidate._id }),
+    ]);
 
     return res.json({
       candidate: {

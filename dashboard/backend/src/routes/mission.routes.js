@@ -6,7 +6,7 @@ import {
   getMission,
   getArchitecture,
   saveArchitecture,
-  saveAnswers, // <-- ADDED
+  saveAnswers,
   completeMission,
   devUnlockAllMissions,
   devResetAttempt,
@@ -19,22 +19,15 @@ router.get("/", requireAuth, loadAttempt, listMissions);
 router.get("/:number", requireAuth, loadAttempt, getMission);
 router.get("/:number/architecture", requireAuth, loadAttempt, getArchitecture);
 
+// Saves must be allowed to land even if the timer has just expired —
+// blockIfExpired only guards actions that advance/complete the attempt.
 router.post(
   "/:number/architecture",
   requireAuth,
   loadAttempt,
-  blockIfExpired,
   saveArchitecture,
 );
-
-// <-- ADDED: Dedicated endpoint for workspace case studies (Missions 2 & 3)
-router.post(
-  "/:number/answers",
-  requireAuth,
-  loadAttempt,
-  blockIfExpired,
-  saveAnswers,
-);
+router.post("/:number/answers", requireAuth, loadAttempt, saveAnswers);
 
 router.post(
   "/:number/complete",

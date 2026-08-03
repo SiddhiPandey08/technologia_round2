@@ -12,8 +12,6 @@ export default function MissionComplete() {
     return () => clearInterval(statusTimer);
   }, []);
 
-
-
   const handleExit = () => {
     localStorage.removeItem("recruitos_token");
     window.location.href = "/";
@@ -22,8 +20,18 @@ export default function MissionComplete() {
   return (
     <>
       <style>{`
-        /* Global & Background */
-        body { margin: 0; background-color: #05020a; color: #fff; overflow-x: hidden; }
+        /* Global & Background - Lock viewport */
+        html, body { 
+          margin: 0; 
+          padding: 0; 
+          width: 100vw; 
+          height: 100vh; 
+          overflow: hidden; 
+          background-color: #05020a; 
+          color: #fff; 
+          font-family: system-ui, -apple-system, sans-serif;
+        }
+
         .cyber-grid {
           position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2;
           background-image: 
@@ -57,11 +65,11 @@ export default function MissionComplete() {
 
         /* Animations */
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
 
-        .animate-fade-in { animation: fadeIn 1.5s ease-out forwards; }
-        .animate-slide-up { animation: slideUp 1s ease-out forwards; opacity: 0; }
+        .animate-fade-in { animation: fadeIn 1.2s ease-out forwards; }
+        .animate-slide-up { animation: slideUp 0.8s ease-out forwards; opacity: 0; }
         
         /* Delays */
         .delay-100 { animation-delay: 0.1s; }
@@ -82,14 +90,14 @@ export default function MissionComplete() {
         .chip-completed {
           background: rgba(34, 197, 94, 0.1);
           color: #22C55E; border: 1px solid rgba(34, 197, 94, 0.3);
-          padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold;
+          padding: 3px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: bold;
           text-transform: uppercase; letter-spacing: 1px;
         }
 
         /* Buttons */
         .cyber-btn {
           background: transparent; color: #fff; font-weight: bold; letter-spacing: 1px;
-          text-transform: uppercase; padding: 12px 24px; border-radius: 4px;
+          text-transform: uppercase; padding: 10px 24px; border-radius: 4px;
           cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden;
         }
         .btn-primary {
@@ -98,13 +106,6 @@ export default function MissionComplete() {
         .btn-primary:hover {
           background: rgba(192, 132, 252, 0.4); box-shadow: 0 0 20px rgba(192, 132, 252, 0.6);
           border-color: #C084FC;
-        }
-        .btn-secondary {
-          border: 1px solid #333; color: #aaa;
-        }
-        .btn-secondary:hover {
-          border-color: #C084FC; color: #C084FC; background: rgba(192, 132, 252, 0.1);
-          box-shadow: 0 0 15px rgba(192, 132, 252, 0.3);
         }
       `}</style>
 
@@ -115,59 +116,175 @@ export default function MissionComplete() {
       <div className="cyber-grid"></div>
       <div className="ambient-glow"></div>
 
-      <main className="relative z-10 animate-fade-in" style={{ maxWidth: 1000, margin: "0 auto", padding: "30px 20px", boxSizing: "border-box" }}>
-        
+      {/* Main viewport container set strictly to 100vh with Flexbox */}
+      <main
+        className="relative z-10 animate-fade-in"
+        style={{
+          width: "100vw",
+          height: "100vh",
+          maxWidth: 1000,
+          margin: "0 auto",
+          padding: "20px 24px",
+          boxSizing: "border-box",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          overflow: "hidden",
+        }}
+      >
         {/* Header */}
-        <header style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 50 }}>
+        <header
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <div>
-            <div style={{ fontSize: "0.85rem", color: "#aaa", marginTop: 4, letterSpacing: 1 }}>TECHNOLOGIA 2.0</div>
-            <div className="text-purple-secondary" style={{ fontSize: "0.85rem", fontWeight: "bold", letterSpacing: 1 }}>OPERATION PHOENIX</div>
+            <div
+              style={{ fontSize: "0.75rem", color: "#aaa", letterSpacing: 1 }}
+            >
+              TECHNOLOGIA 2.0
+            </div>
+            <div
+              className="text-purple-secondary"
+              style={{
+                fontSize: "0.8rem",
+                fontWeight: "bold",
+                letterSpacing: 1,
+              }}
+            >
+              OPERATION PHOENIX
+            </div>
           </div>
           <div>
-            <div style={{
-              background: "rgba(16, 185, 129, 0.1)", border: "1px solid #10B981", color: "#10B981",
-              padding: "6px 14px", borderRadius: 4, fontSize: "0.8rem", fontWeight: "bold",
-              letterSpacing: 1, boxShadow: "0 0 10px rgba(16,185,129,0.3)", display: "flex", alignItems: "center", gap: 8
-            }}>
-              <span style={{ display: "inline-block", width: 8, height: 8, background: "#10B981", borderRadius: "50%", boxShadow: "0 0 8px #10B981" }}></span>
+            <div
+              style={{
+                background: "rgba(16, 185, 129, 0.1)",
+                border: "1px solid #10B981",
+                color: "#10B981",
+                padding: "4px 10px",
+                borderRadius: 4,
+                fontSize: "0.75rem",
+                fontWeight: "bold",
+                letterSpacing: 1,
+                boxShadow: "0 0 10px rgba(16,185,129,0.3)",
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+              }}
+            >
+              <span
+                style={{
+                  display: "inline-block",
+                  width: 6,
+                  height: 6,
+                  background: "#10B981",
+                  borderRadius: "50%",
+                  boxShadow: "0 0 8px #10B981",
+                }}
+              ></span>
               PROJECT DEPLOYED
             </div>
           </div>
         </header>
 
         {/* Main Hero */}
-        <div style={{ textAlign: "center", marginBottom: 40 }} className="animate-slide-up delay-100">
-          <h1 className="text-emerald" style={{ fontSize: "3rem", margin: "0 0 40px", fontWeight: 800, letterSpacing: 2 }}>MISSION SUCCESSFUL</h1>
-          
-          <div className="glass-card animate-slide-up delay-600" style={{ padding: "30px", textAlign: "center", marginBottom: 0 }}>
-            <p style={{ fontSize: "1.2rem", margin: "0 0 16px", color: "#fff" }}>
+        <div
+          style={{ textAlign: "center" }}
+          className="animate-slide-up delay-100"
+        >
+          <h1
+            className="text-emerald"
+            style={{
+              fontSize: "clamp(1.8rem, 4vh, 2.8rem)",
+              margin: "0 0 12px",
+              fontWeight: 800,
+              letterSpacing: 2,
+            }}
+          >
+            MISSION SUCCESSFUL
+          </h1>
+
+          <div
+            className="glass-card animate-slide-up delay-600"
+            style={{
+              padding: "16px 20px",
+              textAlign: "center",
+              maxWidth: 700,
+              margin: "0 auto",
+            }}
+          >
+            <p style={{ fontSize: "1rem", margin: "0 0 8px", color: "#fff" }}>
               Your engineering simulation has been successfully completed.
             </p>
-            <p style={{ fontSize: "1.05rem", color: "#aaa", margin: "0 0 16px" }}>
-              Thank you for participating in <span className="text-purple-secondary">TECHNOLOGIA 2.0</span>.
+            <p style={{ fontSize: "0.9rem", color: "#aaa", margin: "0 0 6px" }}>
+              Thank you for participating in{" "}
+              <span className="text-purple-secondary">TECHNOLOGIA 2.0</span>.
             </p>
-            <p style={{ fontSize: "0.95rem", color: "#888", margin: 0 }}>
-              Qualified candidates will receive further communication regarding the next stage.
+            <p style={{ fontSize: "0.8rem", color: "#888", margin: 0 }}>
+              Qualified candidates will receive further communication regarding
+              the next stage.
             </p>
           </div>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 24, marginBottom: 40 }}>
-          
+        {/* Grid Cards Container */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: 16,
+          }}
+        >
           {/* Mission Summary Card */}
-          <div className="glass-card animate-slide-up delay-300" style={{ padding: 24 }}>
-            <h3 style={{ margin: "0 0 20px", fontSize: "1.1rem", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: 10, letterSpacing: 1 }} className="text-purple-secondary">MISSION SUMMARY</h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div
+            className="glass-card animate-slide-up delay-300"
+            style={{ padding: 16 }}
+          >
+            <h3
+              style={{
+                margin: "0 0 12px",
+                fontSize: "0.95rem",
+                borderBottom: "1px solid rgba(255,255,255,0.1)",
+                paddingBottom: 6,
+                letterSpacing: 1,
+              }}
+              className="text-purple-secondary"
+            >
+              MISSION SUMMARY
+            </h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               {[
                 { n: 1, t: "Requirements Discovery" },
                 { n: 2, t: "Architecture Foundation" },
                 { n: 3, t: "System Expansion" },
-                { n: 4, t: "Final Integration" }
-              ].map(m => (
-                <div key={m.n} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "rgba(0,0,0,0.3)", padding: "12px 16px", borderRadius: 6 }}>
+                { n: 4, t: "Final Integration" },
+              ].map((m) => (
+                <div
+                  key={m.n}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    background: "rgba(0,0,0,0.3)",
+                    padding: "8px 12px",
+                    borderRadius: 6,
+                  }}
+                >
                   <div>
-                    <div style={{ fontSize: "0.8rem", color: "#888", marginBottom: 4 }}>Mission {m.n}</div>
-                    <div style={{ fontSize: "0.95rem", fontWeight: 600 }}>{m.t}</div>
+                    <div
+                      style={{
+                        fontSize: "0.7rem",
+                        color: "#888",
+                        marginBottom: 2,
+                      }}
+                    >
+                      Mission {m.n}
+                    </div>
+                    <div style={{ fontSize: "0.85rem", fontWeight: 600 }}>
+                      {m.t}
+                    </div>
                   </div>
                   <div className="chip-completed">Completed</div>
                 </div>
@@ -176,42 +293,100 @@ export default function MissionComplete() {
           </div>
 
           {/* System Status Card */}
-          <div className="glass-card animate-slide-up delay-400" style={{ padding: 24 }}>
-            <h3 style={{ margin: "0 0 20px", fontSize: "1.1rem", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: 10, letterSpacing: 1, fontFamily: "monospace" }} className="text-purple-secondary">&gt;_ SYSTEM STATUS</h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: 16, fontFamily: "monospace", fontSize: "0.95rem" }}>
-              
-              <div style={{ display: "flex", justifyContent: "space-between", opacity: statusStep >= 1 ? 1 : 0, transition: "opacity 0.5s" }}>
+          <div
+            className="glass-card animate-slide-up delay-400"
+            style={{ padding: 16 }}
+          >
+            <h3
+              style={{
+                margin: "0 0 12px",
+                fontSize: "0.95rem",
+                borderBottom: "1px solid rgba(255,255,255,0.1)",
+                paddingBottom: 6,
+                letterSpacing: 1,
+                fontFamily: "monospace",
+              }}
+              className="text-purple-secondary"
+            >
+              &gt;_ SYSTEM STATUS
+            </h3>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 12,
+                fontFamily: "monospace",
+                fontSize: "0.85rem",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  opacity: statusStep >= 1 ? 1 : 0,
+                  transition: "opacity 0.5s",
+                }}
+              >
                 <span style={{ color: "#aaa" }}>Deployment Status</span>
                 <span className="text-green-neon">SUCCESS</span>
               </div>
-              <div style={{ display: "flex", justifyContent: "space-between", opacity: statusStep >= 2 ? 1 : 0, transition: "opacity 0.5s" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  opacity: statusStep >= 2 ? 1 : 0,
+                  transition: "opacity 0.5s",
+                }}
+              >
                 <span style={{ color: "#aaa" }}>Architecture Validation</span>
                 <span className="text-emerald">PASSED</span>
               </div>
-              <div style={{ display: "flex", justifyContent: "space-between", opacity: statusStep >= 3 ? 1 : 0, transition: "opacity 0.5s" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  opacity: statusStep >= 3 ? 1 : 0,
+                  transition: "opacity 0.5s",
+                }}
+              >
                 <span style={{ color: "#aaa" }}>System Health</span>
                 <span style={{ color: "#fff" }}>100%</span>
               </div>
-              <div style={{ display: "flex", justifyContent: "space-between", opacity: statusStep >= 4 ? 1 : 0, transition: "opacity 0.5s" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  opacity: statusStep >= 4 ? 1 : 0,
+                  transition: "opacity 0.5s",
+                }}
+              >
                 <span style={{ color: "#aaa" }}>Critical Errors</span>
                 <span style={{ color: "#fff" }}>0</span>
               </div>
-              <div style={{ display: "flex", justifyContent: "space-between", opacity: statusStep >= 5 ? 1 : 0, transition: "opacity 0.5s" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  opacity: statusStep >= 5 ? 1 : 0,
+                  transition: "opacity 0.5s",
+                }}
+              >
                 <span style={{ color: "#aaa" }}>Readiness</span>
                 <span className="text-gold">Production Ready</span>
               </div>
             </div>
           </div>
-
-
-
         </div>
 
-        {/* Buttons */}
-        <div className="animate-slide-up delay-700" style={{ display: "flex", justifyContent: "center", paddingBottom: 40 }}>
-          <button className="cyber-btn btn-primary" onClick={handleExit}>Exit Simulation</button>
+        {/* Footer Button */}
+        <div
+          className="animate-slide-up delay-700"
+          style={{ display: "flex", justifyContent: "center" }}
+        >
+          <button className="cyber-btn btn-primary" onClick={handleExit}>
+            Exit Simulation
+          </button>
         </div>
-        
       </main>
     </>
   );

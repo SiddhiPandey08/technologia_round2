@@ -403,20 +403,6 @@ export default function ArchitectureBuilder({
                         Required
                       </span>
                     )}
-                    {isModified && (
-                      <span
-                        style={{
-                          fontSize: 10,
-                          background: "var(--violet-dim)",
-                          color: "var(--violet)",
-                          padding: "2px 6px",
-                          borderRadius: 4,
-                          fontWeight: 600,
-                        }}
-                      >
-                        Updated
-                      </span>
-                    )}
                   </div>
                   {currentOpt && (
                     <button

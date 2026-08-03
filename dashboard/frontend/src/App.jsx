@@ -1,12 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Dashboard from "./components/Dashboard.jsx";
 import Login from "./components/Login.jsx";
@@ -40,7 +33,15 @@ export default function App() {
   function handleLogout() {
     localStorage.removeItem("recruitos_token");
     localStorage.removeItem("recruitos_candidate");
+    localStorage.removeItem("phoenix_ends_at");
+    sessionStorage.removeItem("phoenix_tab_switches");
+    sessionStorage.removeItem("phoenix_glossary_prompt_seen");
     setAuthed(false);
+
+    const nextPath = "/login";
+    window.history.pushState({}, "", nextPath);
+    setPathname(nextPath);
+    window.dispatchEvent(new PopStateEvent("popstate"));
   }
 
   return (
@@ -67,7 +68,13 @@ export default function App() {
         {/* Dashboard requires auth, bounces to /login otherwise */}
         <Route
           path="/dashboard"
-          element={<Dashboard authed={authed} onLogout={handleLogout} />}
+          element={
+            authed ? (
+              <Dashboard authed={authed} onLogout={handleLogout} />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
         />
 
         {/* Fallback: unknown paths go back to landing */}
